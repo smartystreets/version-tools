@@ -2,8 +2,8 @@
 set -e
 
 case "${1}" in
-  M|m|p) ;;
-  *) echo "usage: $(basename ${0}) [M|m|p]" && exit 1
+  -M|-m|-p) ;;
+  *) echo "usage: $(basename ${0}) -[M|m|p]" && exit 1
 esac
 
 message="Git command not found. Git executable is required to tag git repositories."
@@ -12,9 +12,13 @@ command -v git >/dev/null 2>/dev/null || (echo "${message}" && exit 2)
 message="Git repository not found. This command must be run within a git repository."
 git rev-parse --git-dir >/dev/null 2>/dev/null || (echo "${message}" && exit 3)
 
+# TODO: if not "dirty", we're done
+
 calculate="$(dirname "${0}")/calculate-version"
 describe="$(git describe --tags 2>/dev/null || echo "0.0.0")"
 version="$("${calculate}" -${1} "${describe}")" # this could fail
 
 message="Unable to tag repository with version '${version}'. Does your user environment have your .gitconfig set with user.name and user.email?"
 git tag -a "${version}" -m "" 2>/dev/null || (echo "${message}" && exit 4)
+
+echo "Tagged repository with version '${version}'."
