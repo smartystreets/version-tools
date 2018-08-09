@@ -12,10 +12,13 @@ command -v git >/dev/null 2>/dev/null || (echo "${message}" && exit 2)
 message="Git repository not found. This command must be run within a git repository."
 git rev-parse --git-dir >/dev/null 2>/dev/null || (echo "${message}" && exit 3)
 
-# TODO: if not "dirty", we're done
-
 calculate="$(dirname "${0}")/calculate-version"
 describe="$(git describe --tags 2>/dev/null || echo "0.0.0")"
+dirty=$(echo "${2}" | awk '{split($0,a,"-"); print a[2]}')
+
+message="No changes"
+test "x${dirty}" = "x" && test "v${version}" != "v0.0.0" && (echo "${message}" && exit 0) || true
+
 version="$("${calculate}" -${1} "${describe}")" # this could fail
 
 message="Unable to tag repository with version '${version}'. Does your user environment have your .gitconfig set with user.name and user.email?"
