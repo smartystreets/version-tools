@@ -13,20 +13,17 @@ message="Git repository not found. This command must be run within a git reposit
 git rev-parse --git-dir >/dev/null 2>/dev/null || (echo "${message}" && exit 3)
 
 version="$(git describe --tags 2>/dev/null || echo "0.0.0")"
+bump="$(dirname "${0}")/bumpit"
+clean="$("${bump}" -${1} "${version}")"
+dirty="$("${bump}" -${1} "${version}" --dirty)"
 
-calculate="$(dirname "${0}")/bumpit"
-version="$("${calculate}" -${1} "${version}")"
-dirty="$("${calculate}" -${1} "${version}" --dirty)"
+message="No changes to repository since last tag '${dirty}'."
+test "x${clean}" != "x${dirty}" && echo "${message}" && exit 0
 
-if test "x${version}" = "x${dirty}"; then
-	message="No changes to repository since last tag '${version}'."
-	echo "${message}" && exit 0
-fi
+message="Unable to tag the repository with version '${clean}'. The tag already exists."
+git rev-parse "${clean}" >/dev/null 2>/dev/null && (echo "${message}" && exit 4) || true
 
-message="Unable to tag the repository with version '${version}'. The tag already exists."
-git rev-parse "${version}" >/dev/null 2>/dev/null && (echo "${message}" && exit 4) || true
+message="Unable to tag repository with version '${clean}'. Does your user environment have your .gitconfig set with user.name and user.email?"
+git tag -a "${clean}" -m "" 2>/dev/null || (echo "${message}" && exit 5)
 
-message="Unable to tag repository with version '${version}'. Does your user environment have your .gitconfig set with user.name and user.email?"
-git tag -a "${version}" -m "" 2>/dev/null || (echo "${message}" && exit 5)
-
-echo "Tagged repository with version '${version}'."
+echo "Tagged repository with version '${clean}'."
