@@ -13,19 +13,19 @@ message="Git repository not found. This command must be run within a git reposit
 git rev-parse --git-dir >/dev/null 2>/dev/null || (echo "${message}" && exit 3)
 
 calculate="$(dirname "${0}")/calculate-version"
-describe="$(git describe --tags 2>/dev/null || echo "0.0.0")"
-dirty=$(echo "${describe}" | awk '{split($0,a,"-"); print a[2]}')
+version="$(git describe --tags 2>/dev/null || echo "0.0.0")"
+dirty=$(echo "${version}" | awk '{split($0,a,"-"); print a[2]}')
 
-message="Repository already tagged with '${describe}'."
+message="Repository already tagged with '${version}'."
 if test "v${version}" != "v0.0.0" && test "x${dirty}" = "x"; then
 	echo "${message}"
 	exit 0
 fi
 
-version="$("${calculate}" -${1} "${describe}")" # TODO: this could fail if ${describe} is malformed
+version="$("${calculate}" -${1} "${version}")" # TODO: this could fail if ${version} is malformed
 
 message="Unable to tag the repository with version '${version}'. The tag already exists."
-git-rev-parse "${version}" >/dev/null 2>/dev/null && true || (echo "${message}" && exit 4)
+git rev-parse "${version}" >/dev/null 2>/dev/null && (echo "${message}" && exit 4) || true
 
 message="Unable to tag repository with version '${version}'. Does your user environment have your .gitconfig set with user.name and user.email?"
 git tag -a "${version}" -m "" 2>/dev/null || (echo "${message}" && exit 5)
