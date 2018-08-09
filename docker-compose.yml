@@ -5,22 +5,22 @@ services:
     image: alpine:latest
     working_dir: /code
     volumes: 
-      - ./src:/code
+      - .:/code
 
   ubuntu:
     image: ubuntu:latest
     working_dir: /code
     volumes: 
-      - ./src:/code
+      - .:/code
 
   debian:
     image: debian:latest
     working_dir: /code
     volumes: 
-      - ./src:/code
+      - .:/code
 
   fedora:
     image: fedora:latest
     working_dir: /code
     volumes: 
-      - ./src:/code
+      - .:/code
