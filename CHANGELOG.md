@@ -1,5 +1,7 @@
 ## Next (Unreleased)
 
+## 0.0.2 (2018-08-09)
+
 BREAKING CHANGES:
 
  * Renamed `calculate-version` to `bumpit`
