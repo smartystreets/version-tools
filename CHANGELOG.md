@@ -1,5 +1,10 @@
 ## Next (Unreleased)
 
+## 0.0.4 (2018-08-09)
+
+MISC:
+
+ * Publishing scripts as a tarball to Github.
 
 ## 0.0.3 (2018-08-09)
 
