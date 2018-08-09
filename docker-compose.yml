@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+
+  alpine:
+    image: alpine:latest
+    working_dir: /code
+    volumes: 
+      - .:/code
+
+  ubuntu:
+    image: ubuntu:latest
+    working_dir: /code
+    volumes: 
+      - .:/code
+
+  debian:
+    image: debian:latest
+    working_dir: /code
+    volumes: 
+      - .:/code
+
+  fedora:
+    image: fedora:latest
+    working_dir: /code
+    volumes: 
+      - .:/code
