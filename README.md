@@ -52,3 +52,12 @@ Tagged repository with version '1.0.0'."
 If the repository is in a clean state (no new commits since the last tag), it will not add any new tags.
 
 If `tagit` is unable to tag the repository, it will print a diagnostic message and exit.
+
+
+### INSTALLATION:
+
+On MacOS:
+```
+$ brew tap smartystreets/builds
+$ brew install smartystreets/builds/version-tools
+```
