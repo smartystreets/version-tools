@@ -27,10 +27,10 @@ test "x${dryrun}" = "xtrue" && echo "${dirty}" && exit 0
 message="No changes to repository since last tag '${dirty}'."
 test "x${clean}" != "x${dirty}" && echo "${message}" && exit 0
 
-message="Unable to tag the repository with version '${clean}'. The tag already exists."
-git rev-parse "${clean}" >/dev/null 2>/dev/null && (echo "${message}" && exit 4)
+message="Unable to tag the repository with version '${dirty}'. The tag already exists."
+git rev-parse "${dirty}" >/dev/null 2>/dev/null && (echo "${message}" && exit 4)
 
-message="Unable to tag repository with version '${clean}'. Does your user environment have your .gitconfig set with user.name and user.email?"
-git tag -a "${clean}" -m "" 2>/dev/null || (echo "${message}" && exit 5)
+message="Unable to tag repository with version '${dirty}'. Does your user environment have your .gitconfig set with user.name and user.email?"
+git tag -a "${dirty}" -m "" 2>/dev/null || (echo "${message}" && exit 5)
 
-echo "Tagged repository with version '${clean}'."
+echo "Tagged repository with version '${dirty}'."
