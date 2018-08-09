@@ -2,7 +2,7 @@
 set -e
 
 if test "x${1}" = "x" || test "x${2}" = "x"; then
-   echo "usage: $(basename $0) [-Mmp] major.minor.patch" && exit 1
+   echo "usage: $(basename ${0}) [-Mmp] major.minor.patch" && exit 1
 fi
 
 while getopts ":Mmp" bump; do
