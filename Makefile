@@ -1,10 +1,10 @@
 #!/usr/bin/make -f
 
 tag-major:
-	@./git-tag-version -M
+	@./tagit -M
 
 tag-minor:
-	@./git-tag-version -m
+	@./tagit -m
 
 tag-patch:
-	@./git-tag-version -p
+	@./tagit -p

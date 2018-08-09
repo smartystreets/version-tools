@@ -9,40 +9,40 @@ There are two scripts: one for semver calculation and another which tags your Gi
 Here's example of how to calculate the next semver value based upon the existing version:
 
 ```
-$ calculate-version
-usage: calculate-version [-Mmp] major.minor.patch
+$ bumpit
+usage: bumpit [-Mmp] major.minor.patch
 
-$ calculate-version -p 0.0.0
+$ bumpit -p 0.0.0
 0.0.1
 
-$ calculate-version -m 0.0.3
+$ bumpit -m 0.0.3
 0.1.0
 
-$ calculate-version -M 1.1.15
+$ bumpit -M 1.1.15
 2.0.0
 
-$ calculate-version -Mmp 2.3.4
+$ bumpit -Mmp 2.3.4
 3.1.1
 
-$ calculate-version -p 1.2.3-17-6fb3af9 # (results of git-describe)
+$ bumpit -p 1.2.3-17-6fb3af9 # (results of git-describe)
 1.2.4
 ```
 
 Here's an example of how to tag your Git repository based upon the existing semver-based tags:
 ```
-$ git-tag-version
-usage: git-tag-version -[M|m|p]
+$ tagit
+usage: tagit -[M|m|p]
 
-$ git-tag-version -p
+$ tagit -p
 Tagged repository with version '0.0.1'."
 
-$ git-tag-version -m
+$ tagit -m
 Tagged repository with version '0.1.0'."
 
-$ git-tag-version -M
+$ tagit -M
 Tagged repository with version '1.0.0'."
 ```
 
 If the repository is in a clean state (no new commits since the last tag), it will not add any new tags.
 
-If `git-tag-version` is unable to tag the repository, it will print a diagnostic message and exit.
+If `tagit` is unable to tag the repository, it will print a diagnostic message and exit.

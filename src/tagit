@@ -18,7 +18,7 @@ dirty=$(echo "${version}" | awk '{split($0,a,"-"); print a[2]}')
 message="No changes to repository since last tag '${version}'."
 test "v${version}" != "v0.0.0" && test "x${dirty}" = "x" && echo "${message}" && exit 0
 
-calculate="$(dirname "${0}")/calculate-version"
+calculate="$(dirname "${0}")/bumpit"
 version="$("${calculate}" -${1} "${version}")" # TODO: this could fail if ${version} is malformed
 
 message="Unable to tag the repository with version '${version}'. The tag already exists."
