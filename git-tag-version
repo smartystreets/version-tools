@@ -17,10 +17,7 @@ version="$(git describe --tags 2>/dev/null || echo "0.0.0")"
 dirty=$(echo "${version}" | awk '{split($0,a,"-"); print a[2]}')
 
 message="Repository already tagged with '${version}'."
-if test "v${version}" != "v0.0.0" && test "x${dirty}" = "x"; then
-	echo "${message}"
-	exit 0
-fi
+test "v${version}" != "v0.0.0" && test "x${dirty}" = "x" && echo "${message}" && exit 0
 
 version="$("${calculate}" -${1} "${version}")" # TODO: this could fail if ${version} is malformed
 
