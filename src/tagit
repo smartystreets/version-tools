@@ -3,7 +3,11 @@ set -e
 
 case "${1}" in
   -M|-m|-p) ;;
-  *) echo "usage: $(basename ${0}) -[M|m|p]" && exit 1
+  *) echo "usage: $(basename ${0}) -[M|m|p] [-d|--dryrun|--dry-run]" && exit 1
+esac
+
+case "${2}" in
+ -d|--dryrun|--dry-run) dryrun=true;;
 esac
 
 message="Git command not found. Git executable is required to tag git repositories."
@@ -16,6 +20,9 @@ version="$(git describe --tags 2>/dev/null || echo "0.0.0")"
 bump="$(dirname "${0}")/bumpit"
 clean="$("${bump}" -${1} "${version}")"
 dirty="$("${bump}" -${1} "${version}" --dirty)"
+
+message="${dirty}"
+test "x${dryrun}" = "xtrue" && echo "${dirty}" && exit 0
 
 message="No changes to repository since last tag '${dirty}'."
 test "x${clean}" != "x${dirty}" && echo "${message}" && exit 0

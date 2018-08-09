@@ -37,7 +37,7 @@ $ bumpit -p 1.2.3 -dirty # version is clean, it doesn't increment
 Here's an example of how to tag your Git repository based upon the existing semver-based tags:
 ```
 $ tagit
-usage: tagit -[M|m|p]
+usage: tagit -[M|m|p] [-d|--dryrun|--dry-run]
 
 $ tagit -p
 Tagged repository with version '0.0.1'."
