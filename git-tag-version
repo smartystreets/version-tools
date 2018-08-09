@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+set -e
+
+this="$(basename ${0})"
+calculate="$(dirname "${0}")/calculate-version"
+describe="$(git describe --tags 2>/dev/null || echo "0.0.0")"
+version=""
+
+case "${1}" in
+  major) version="$("${calculate}" -M "${describe}")"  ;;
+  minor) version="$("${calculate}" -m "${describe}")"  ;;
+  patch) version="$("${calculate}" -p "${describe}")"  ;;
+  *) echo "usage: ${this} [major|minor|patch]" && exit 1
+esac
+
+git tag -a "${version}" -m "" 2>/dev/null || \
+  (echo "Unable to tag repository with version '${version}'." && exit 1)
