@@ -8,3 +8,6 @@ minor:
 
 patch:
 	@./src/tagit -p
+
+docker-publish:
+	docker build . -t "smartystreets/version-tools:$(shell git describe)"
