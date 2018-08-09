@@ -26,6 +26,12 @@ $ bumpit -Mmp 2.3.4
 
 $ bumpit -p 1.2.3-17-6fb3af9 # (results of git-describe)
 1.2.4
+
+$ bumpit -p 1.2.3-17-6fb3af9 -dirty
+1.2.4
+
+$ bumpit -p 1.2.3 -dirty # version is clean, it doesn't increment
+1.2.3
 ```
 
 Here's an example of how to tag your Git repository based upon the existing semver-based tags:
