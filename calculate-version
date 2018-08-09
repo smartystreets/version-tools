@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 set -e
 
-[[ -z "${1}" || -z "${2}" ]] \
-  && echo "usage: $(basename $0) [-Mmp] major.minor.patch" \
-  && exit 1
+if test "x${1}" = "x" || test "x${2}" = "x"; then
+   echo "usage: $(basename $0) [-Mmp] major.minor.patch" && exit 1
+fi
 
 while getopts ":Mmp" bump; do
   case $bump in
