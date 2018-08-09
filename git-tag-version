@@ -12,13 +12,13 @@ command -v git >/dev/null 2>/dev/null || (echo "${message}" && exit 2)
 message="Git repository not found. This command must be run within a git repository."
 git rev-parse --git-dir >/dev/null 2>/dev/null || (echo "${message}" && exit 3)
 
-calculate="$(dirname "${0}")/calculate-version"
 version="$(git describe --tags 2>/dev/null || echo "0.0.0")"
 dirty=$(echo "${version}" | awk '{split($0,a,"-"); print a[2]}')
 
-message="Repository already tagged with '${version}'."
+message="No changes to repository since last tag '${version}'."
 test "v${version}" != "v0.0.0" && test "x${dirty}" = "x" && echo "${message}" && exit 0
 
+calculate="$(dirname "${0}")/calculate-version"
 version="$("${calculate}" -${1} "${version}")" # TODO: this could fail if ${version} is malformed
 
 message="Unable to tag the repository with version '${version}'. The tag already exists."
