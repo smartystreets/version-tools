@@ -21,7 +21,7 @@ message="No changes to repository since last tag '${dirty}'."
 test "x${clean}" != "x${dirty}" && echo "${message}" && exit 0
 
 message="Unable to tag the repository with version '${clean}'. The tag already exists."
-git rev-parse "${clean}" >/dev/null 2>/dev/null && (echo "${message}" && exit 4) || true
+git rev-parse "${clean}" >/dev/null 2>/dev/null && (echo "${message}" && exit 4)
 
 message="Unable to tag repository with version '${clean}'. Does your user environment have your .gitconfig set with user.name and user.email?"
 git tag -a "${clean}" -m "" 2>/dev/null || (echo "${message}" && exit 5)
