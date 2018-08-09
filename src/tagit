@@ -18,7 +18,7 @@ calculate="$(dirname "${0}")/bumpit"
 version="$("${calculate}" -${1} "${version}")"
 dirty="$("${calculate}" -${1} "${version}" --dirty)"
 
-if "x${version}" != "x${dirty}"; then
+if test "x${version}" = "x${dirty}"; then
 	message="No changes to repository since last tag '${version}'."
 	echo "${message}" && exit 0
 fi
