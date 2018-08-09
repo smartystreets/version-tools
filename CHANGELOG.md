@@ -1,5 +1,8 @@
 ## Next (Unreleased)
 
+
+## 0.0.3 (2018-08-09)
+
 FEATURES:
 
  * Added `--dryrun` flag to `tagit`.
