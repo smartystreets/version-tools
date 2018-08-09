@@ -1,10 +1,10 @@
 #!/usr/bin/make -f
 
-tag-major:
-	@./tagit -M
+major:
+	@./src/tagit -M
 
-tag-minor:
-	@./tagit -m
+minor:
+	@./src/tagit -m
 
-tag-patch:
-	@./tagit -p
+patch:
+	@./src/tagit -p
