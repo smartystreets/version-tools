@@ -9,12 +9,13 @@ minor:
 patch:
 	@./src/tagit -p
 
-package:
+github-package:
 	cd src/ && GZIP=-9 tar -cvzf ../release.tar.gz *
-
-publish: patch package
+github-publish: github-package
 	hub release create -a release.tar.gz -m "v$(shell git describe) release" "$(shell git describe)"
 	git push origin master --tags
 
-#docker-publish:
-#	docker build . -t "smartystreets/version-tools:$(shell git describe)"
+publish: patch
+	test -f ~/.config/hub && mkdir -p .config && cp ~/.config/hub ./.config
+	# now docker-compose run primary make publish
+	# docker -f Dockerfile.dockerhub build . -t "smartystreets/version-tools:$(shell git describe)"
