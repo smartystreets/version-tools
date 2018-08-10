@@ -1,11 +1,6 @@
 version: '3.7'
 services:
 
-  default:
-    build: .
-    volumes:
-      - .:/code
-
   alpine:
     image: alpine:latest
     working_dir: /code

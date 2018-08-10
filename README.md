@@ -61,18 +61,3 @@ On MacOS:
 $ brew tap smartystreets/builds
 $ brew install smartystreets/builds/version-tools
 ```
-
-
-### USAGE IN DOCKER:
-
-To make the tools available within a container, simply copy them from published layer. Here is an example Dockerfile:
-```
-FROM smartystreets/version-tools:0.0.3 as tools
-
-FROM alpine:latest
-COPY --from=tools /usr/bin /usr/bin
-
-... # the rest of your dockerfile
-... # bumpit and tagit will now be available within the container
-
-```
