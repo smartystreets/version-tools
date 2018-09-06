@@ -61,3 +61,12 @@ On MacOS:
 $ brew tap smartystreets/builds
 $ brew install smartystreets/builds/version-tools
 ```
+
+Inside a Docker container:
+```
+# toward the top of target Dockerfile
+FROM smartystreets/version-tools:latest as version-tools
+
+FROM your-base-image-name-here
+COPY --from=version-tools / / # copies the tools into the /usr/local/bin/ directory on the target
+```

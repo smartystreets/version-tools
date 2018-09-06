@@ -4,6 +4,7 @@ FEATURES:
 
  * Allowing `-d` flag to be used in addition to `--dirty` for `bumpit` command.
  * When the git committer (user/email) has not been set, use a fake one.
+ * Added Docker container publication and readme instructions.
 
 ## 0.0.4 (2018-08-09)
 
