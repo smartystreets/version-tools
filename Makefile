@@ -1,9 +1,10 @@
 #!/usr/bin/make -f
 
-PROJECT := smartystreets/version-tools
+SOURCE_NAME := version-tools
+DOCKER_IMAGE := smartystreets/$(SOURCE_NAME)
 
 clean:
-	rm -f release.tar.gz release.zip
+	rm -rf output/
 
 major:
 	@./src/tagit -M
@@ -14,19 +15,28 @@ minor:
 patch:
 	@./src/tagit -p
 
+debian-changelog:
+	@echo "$(SOURCE_NAME) ($(shell git describe)) unstable; urgency=low" > debian/changelog
+	@echo "\n  * $(shell git rev-parse HEAD)\n" >> debian/changelog
+	@echo " -- $(shell git --no-pager show -s --format="%an <%ae>")  $(shell git --no-pager show -s --format="%cD")" >> debian/changelog
+
 #############################################33
 
 publish:
 	git push origin --tags
-	docker push "$(PROJECT):$(shell git describe)" && docker push "$(PROJECT):latest"
+	docker push "$(DOCKER_IMAGE):$(shell git describe)" && docker push "$(DOCKER_IMAGE):latest"
 	hub release create -a release.tar.gz -a release.zip -m "v$(shell git describe) release" "$(shell git describe)"
 
-package: clean version docker tarball
+package: clean version tarball docker debianize
 
 version: patch
 
 docker:
-	docker build . -t "$(PROJECT):$(shell git describe)" -t "$(PROJECT):latest"
+	docker build . -t "$(DOCKER_IMAGE):$(shell git describe)" -t "$(DOCKER_IMAGE):latest"
 
 tarball:
-	cd src/ && GZIP=-9 tar -cvzf ../release.tar.gz * && zip -9 ../release.zip *
+	cd src/ && GZIP=-9 tar -cvzf ../output/release.tar.gz * && zip -9 ../output/release.zip *
+
+debianize:
+	docker build -f Dockerfile.debian -t version-tools-debian .
+	docker run --rm -v "$(CURDIR)/output:/output/" version-tools-debian

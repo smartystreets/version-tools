@@ -1,3 +1,5 @@
-/.config
-/release.tar.gz
-/release.zip
+*DS_Store*
+*.swp
+__MACOSX
+/output
+/.idea
