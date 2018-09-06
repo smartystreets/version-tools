@@ -19,7 +19,7 @@ patch:
 publish:
 	git push origin --tags
 	docker push "$(PROJECT):$(shell git describe)" && docker push "$(PROJECT):latest"
-	hub release create -a release.tar.gz release.zip -m "v$(shell git describe) release" "$(shell git describe)"
+	hub release create -a release.tar.gz -a release.zip -m "v$(shell git describe) release" "$(shell git describe)"
 
 package: clean version docker tarball
 

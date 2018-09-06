@@ -1,6 +1,7 @@
 ## Next (Unreleased)
 
-* Added Github release packaging
+* Added Github release packaging for tar.gz
+* Added Github release packaging for zip
 
 ## 0.0.5 (2018-09-05)
 
