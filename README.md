@@ -1,4 +1,4 @@
-### VERSION TOOLS
+## VERSION TOOLS
 
 ----------------------
 
@@ -54,19 +54,39 @@ If the repository is in a clean state (no new commits since the last tag), it wi
 If `tagit` is unable to tag the repository, it will print a diagnostic message and exit.
 
 
-### INSTALLATION:
+## INSTALLATION:
 
-On MacOS:
+### On MacOS:
 ```
 $ brew tap smartystreets/builds
 $ brew install smartystreets/builds/version-tools
 ```
 
-Inside a Docker container:
+### Inside a Docker container:
 ```
 # toward the top of target Dockerfile
 FROM smartystreets/version-tools:latest as version-tools
 
 FROM your-base-image-name-here
 COPY --from=version-tools /* /usr/bin
+```
+
+### On a Debian-based OS:
+```
+$ wget "https://github.com/smartystreets/version-tools/releases/download/0.0.6/version-tools_0.0.6_all.deb"
+$ dpkg -i version-tools_0.0.6_all.deb
+$ rm version-tools_0.0.6_all.deb
+```
+(NOTE: be sure to point to the latest release. This readme file MAY be several versions behind.)
+
+### Other environments (tar.gz):
+```
+$ curl "https://github.com/smartystreets/version-tools/releases/download/0.0.6/release.tar.gz" \
+  sudo tar -xz -C /usr/local/bin
+```
+
+### Other environments (zip):
+```
+$ wget "https://github.com/smartystreets/version-tools/releases/download/0.0.6/release.zip"
+$ unzip release.zip -d /usr/local/bin
 ```
