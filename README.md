@@ -1,7 +1,5 @@
 ## VERSION TOOLS
 
-----------------------
-
 These tools are designed to facilate version calculation and respository tagging using Semantic Versioning (semver) and are compatible with POSIX-based shells (`bash`, `dash`, `sh`, etc.) on Linux, Unix, and MacOS. The scripts are explictly designed to avoid all external dependencies such that they can be run in a minimal container environment such as Alpine Linux.
 
 There are two scripts: one for semver calculation and another which tags your Git repository according to the calculated version script. Git is only required if and when you want to tag your repository using the tagging script.
@@ -51,8 +49,7 @@ Tagged repository with version '1.0.0'."
 
 If the repository is in a clean state (no new commits since the last tag), it will not add any new tags.
 
-If `tagit` is unable to tag the repository, it will print a diagnostic message and exit.
-
+If `tagit` is unable to tag the repository, it will print a diagnostic message and exit with a non-zero error code.
 
 ## INSTALLATION:
 
@@ -69,6 +66,8 @@ FROM smartystreets/version-tools:latest as version-tools
 
 FROM your-base-image-name-here
 COPY --from=version-tools /* /usr/bin
+
+# the rest of your Dockerfile contents here...
 ```
 
 ### On a Debian-based OS:
@@ -77,7 +76,6 @@ $ wget "https://github.com/smartystreets/version-tools/releases/download/0.0.6/v
 $ dpkg -i version-tools_0.0.6_all.deb
 $ rm version-tools_0.0.6_all.deb
 ```
-(NOTE: be sure to point to the latest release. This readme file MAY be several versions behind.)
 
 ### Other environments (tar.gz):
 ```
@@ -90,3 +88,8 @@ $ curl "https://github.com/smartystreets/version-tools/releases/download/0.0.6/r
 $ wget "https://github.com/smartystreets/version-tools/releases/download/0.0.6/release.zip"
 $ unzip release.zip -d /usr/local/bin
 ```
+
+### Notes:
+
+- Be sure to point to the latest release. This readme file MAY be several versions behind.
+- You're welcome to download with `curl`, `wget` or any other mechanism. The use of `curl` or `wget` above is simply an example of how to download the release artifact.
