@@ -1,2 +1,3 @@
 /.config
-*.tar.gz
+/release.tar.gz
+/release.zip
