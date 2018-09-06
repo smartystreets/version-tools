@@ -25,7 +25,10 @@ debian-changelog:
 publish:
 	git push origin --tags
 	docker push "$(DOCKER_IMAGE):$(shell git describe)" && docker push "$(DOCKER_IMAGE):latest"
-	hub release create -a output/* -m "v$(shell git describe) release" "$(shell git describe)"
+	hub release create -m "v$(shell git describe) release" "$(shell git describe)" \
+		-a output/release.tar.gz \
+		-a output/release.zip \
+		-a output/*.deb
 
 package: clean version tarball docker debianize
 
