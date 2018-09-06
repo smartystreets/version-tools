@@ -68,5 +68,5 @@ Inside a Docker container:
 FROM smartystreets/version-tools:latest as version-tools
 
 FROM your-base-image-name-here
-COPY --from=version-tools / / # copies the tools into the /usr/local/bin/ directory on the target
+COPY --from=version-tools /* /usr/bin
 ```
