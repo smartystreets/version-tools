@@ -80,7 +80,7 @@ $ rm version-tools_0.0.6_all.deb
 ### Other environments (tar.gz):
 ```
 $ curl "https://github.com/smartystreets/version-tools/releases/download/0.0.6/release.tar.gz" \
-  sudo tar -xz -C /usr/local/bin
+	| sudo tar -xz -C /usr/local/bin
 ```
 
 ### Other environments (zip):
