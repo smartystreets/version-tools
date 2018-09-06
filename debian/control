@@ -1,0 +1,15 @@
+Source: version-tools
+Section: non-free
+Priority: optional
+Maintainer: Oliver, Jonathan <jonathan.s.oliver42@gmail.com>
+Standards-Version: 3.9.5
+Build-Depends: debhelper (>= 9.0)
+Vcs-Git: git://github.com/smartystreets/version-tools.git
+Vcs-Browser: https://github.com/smartystreets/version-tools
+
+Package: version-tools
+Architecture: all
+Depends: ${misc:Depends}
+Suggests: git-core
+Description: Version Tools
+ Provides version tools to help manipulate version numbers according to semver.
