@@ -1,7 +1,8 @@
 ## Next (Unreleased)
 
-* Added Github release packaging for tar.gz
-* Added Github release packaging for zip
+* Added Github release packaging for tar.gz.
+* Added Github release packaging for zip.
+* Added Github release packaging for debian.
 
 ## 0.0.5 (2018-09-05)
 
