@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-PROJECT := "smartystreets/version-tools"
+PROJECT := smartystreets/version-tools
 
 clean:
 
