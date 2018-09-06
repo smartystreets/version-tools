@@ -30,6 +30,11 @@ test "x${clean}" != "x${dirty}" && echo "${message}" && exit 0
 message="Unable to tag the repository with version '${dirty}'. The tag already exists."
 git rev-parse "${dirty}" >/dev/null 2>/dev/null && (echo "${message}" && exit 4)
 
+username="$( git config user.name || echo ${GIT_COMMITTER_NAME} )"
+email="$( git config user.email || echo ${GIT_COMMITTER_EMAIL} )"
+test "x${username}" = "x" && export GIT_COMMITTER_NAME="version-tools"
+test "x${email}" = "x" && export GIT_COMMITTER_EMAIL="dev@null"
+
 message="Unable to tag repository with version '${dirty}'. Does your user environment have your .gitconfig set with user.name and user.email?"
 git tag -a "${dirty}" -m "" 2>/dev/null || (echo "${message}" && exit 5)
 
