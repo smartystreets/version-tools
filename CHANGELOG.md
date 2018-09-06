@@ -1,5 +1,9 @@
 ## Next (Unreleased)
 
+FEATURES:
+
+ * Allowing `-d` flag to be used in addition to `--dirty` for `bumpit` command.
+
 ## 0.0.4 (2018-08-09)
 
 MISC:

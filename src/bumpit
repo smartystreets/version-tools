@@ -2,7 +2,7 @@
 set -e
 
 if test "x${1}" = "x" || test "x${2}" = "x"; then
-   echo "usage: $(basename ${0}) [-Mmp] major.minor.patch" && exit 1
+   echo "usage: $(basename ${0}) [-Mmp] major.minor.patch [-d|--dirty]" && exit 1
 fi
 
 while getopts ":Mmp" bump; do
@@ -20,7 +20,7 @@ minor=$(echo "${clean}" | awk '{split($0,a,"."); print a[2]}')
 patch=$(echo "${clean}" | awk '{split($0,a,"."); print a[3]}')
 
 # if the --dirty flag is specified, exit if we are in a clean state
-test "x${3}" = "x--dirty" && test "x${dirty}" = "x" && echo "${clean}" && exit 0
+(test "x${3}" = "x--dirty" || test "x${3}" = "x-d" ) && test "x${dirty}" = "x" && echo "${clean}" && exit 0
 
 [ ! -z ${bump_major} ] && major=$((major+1)) && minor=0 && patch=0
 [ ! -z ${bump_minor} ] && minor=$((minor+1)) && patch=0

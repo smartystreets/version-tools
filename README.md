@@ -10,7 +10,7 @@ Here's example of how to calculate the next semver value based upon the existing
 
 ```
 $ bumpit
-usage: bumpit [-Mmp] major.minor.patch
+usage: usage: bumpit [-Mmp] major.minor.patch [-d|--dirty]
 
 $ bumpit -p 0.0.0
 0.0.1
