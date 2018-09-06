@@ -1,5 +1,7 @@
 ## Next (Unreleased)
 
+* Added Github release packaging
+
 ## 0.0.5 (2018-09-05)
 
 FEATURES:
