@@ -38,8 +38,13 @@ docker:
 	docker build . -t "$(DOCKER_IMAGE):$(shell git describe)" -t "$(DOCKER_IMAGE):latest"
 
 tarball:
-	mkdir -p output/ && cd src/ && GZIP=-9 tar -cvzf ../output/release.tar.gz * && zip -9 ../output/release.zip *
+	mkdir -p output/ && cd src/ \
+		&& GZIP=-9 tar -cvzf ../output/release.tar.gz * \
+		&& zip -9 ../output/release.zip * \
+		&& cat ../install | sed 's/0\.0\.0/$(shell git describe)/g' > ../output/install
 
 debianize:
 	docker build -f Dockerfile.debian -t version-tools-debian .
 	docker run --rm -v "$(CURDIR)/output:/output/" version-tools-debian
+
+.PHONY: clean major minor patch debian-changelog publish package version docker tarball debianize

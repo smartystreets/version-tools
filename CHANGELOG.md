@@ -1,5 +1,7 @@
 ## Next (Unreleased)
 
+* Added POSIX-compliant install script.
+
 ## 0.0.6 (2018-09-06)
 
 * Added Github release packaging for tar.gz.
