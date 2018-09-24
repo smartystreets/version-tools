@@ -36,10 +36,13 @@ image:
 
 release: image
 	docker-compose run tools make package \
-		&& tagit -p \
-		&& hub release create -m "v$(VERSION) release" "$(VERSION)" -a workspace/* \
+		&& hub release create -m "v$(VERSION) release" "$(VERSION)" \
+			-a workspace/install \
+			-a workspace/release.tar.gz \
+			-a workspace/release.zip \
+			-a workspace/*.deb \
 		&& docker push "$(DOCKER_IMAGE):$(VERSION)" \
 		&& docker push "$(DOCKER_IMAGE):latest" \
-		&& git push origin --tags
+		&& tagit -p && git push origin --tags
 
 .PHONY: clean changelog deb tarball package workspace image release
