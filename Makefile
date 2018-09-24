@@ -7,7 +7,7 @@ VERSION      ?= $(shell tagit -p --dry-run)
 clean:
 	rm -rf workspace/ scratch/ *.deb *.buildinfo *.changes
 
-changelog: clean
+changelog:
 	@mkdir -p scratch/debian && echo "$(SOURCE_NAME) ($(VERSION)) unstable; urgency=low" > scratch/debian/changelog \
 		&& echo "\n  * $(shell git rev-parse HEAD)\n" >> scratch/debian/changelog \
 		&& echo " -- $(shell git --no-pager show -s --format="%an <%ae>")  $(shell git --no-pager show -s --format="%cD")" >> scratch/debian/changelog
@@ -22,9 +22,9 @@ tarball:
 	mkdir -p workspace/ && cd src/ \
 		&& GZIP=-9 tar -cvzf ../workspace/release.tar.gz * --owner=0 --group=0 \
 		&& zip -9 ../workspace/release.zip * \
-		&& cat ../install | sed 's/0\.0\.0/$(VERSION)/g' > ../workspace/install
+		&& cd .. && cat install | sed -E 's/[0-9]+\.[0-9]+\.[0-9]+/$(VERSION)/g' > workspace/install
 
-package: deb tarball
+package: clean tarball deb
 
 #############################################
 
