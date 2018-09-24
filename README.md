@@ -72,21 +72,35 @@ COPY --from=version-tools / /usr/bin
 
 ### On a Debian-based OS:
 ```
-$ wget "https://github.com/smartystreets/version-tools/releases/download/0.0.6/version-tools_0.0.6_all.deb"
-$ dpkg -i version-tools_0.0.6_all.deb
-$ rm version-tools_0.0.6_all.deb
+$ wget "https://github.com/smartystreets/version-tools/releases/download/0.0.8/version-tools_0.0.8_all.deb"
+$ dpkg -i version-tools_0.0.8_all.deb
+$ rm version-tools_0.0.8_all.deb
+```
+
+You can also install using the provided install script which works on BSD, Linux, and Mac and work in shell environments such as Bash and others.
+
+### Other environments (install):
+```
+$ curl -sL bit.ly/version-tools | sudo sh
+Package [version-tools] successfully installed into [/usr/local/bin/].
+
+# --- OR ---
+
+$ wget -q -O - bit.ly/version-tools | sudo sh
+Package [version-tools] successfully installed into [/usr/local/bin/].
 ```
 
 ### Other environments (tar.gz):
 ```
-$ curl "https://github.com/smartystreets/version-tools/releases/download/0.0.6/release.tar.gz" \
+$ curl "https://github.com/smartystreets/version-tools/releases/download/0.0.8/release.tar.gz" \
 	| sudo tar -xz -C /usr/local/bin
 ```
 
 ### Other environments (zip):
 ```
-$ wget "https://github.com/smartystreets/version-tools/releases/download/0.0.6/release.zip"
+$ wget "https://github.com/smartystreets/version-tools/releases/download/0.0.8/release.zip"
 $ unzip release.zip -d /usr/local/bin
+$ rm release.zip
 ```
 
 ### Notes:
