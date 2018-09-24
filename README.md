@@ -65,7 +65,7 @@ $ brew install smartystreets/builds/version-tools
 FROM smartystreets/version-tools:latest as version-tools
 
 FROM your-base-image-name-here
-COPY --from=version-tools /* /usr/bin
+COPY --from=version-tools / /usr/bin
 
 # the rest of your Dockerfile contents here...
 ```

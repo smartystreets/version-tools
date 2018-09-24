@@ -3,3 +3,9 @@
 __MACOSX
 /.idea/
 /workspace/
+
+/debian/
+*.buildinfo
+*.changes
+*.deb
+*.dsc

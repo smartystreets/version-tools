@@ -1,6 +1,9 @@
 ## Next (Unreleased)
 
+## 0.0.7 (2018-09-24)
+
 * Added POSIX-compliant install script.
+* Overhauled packaging and release process.
 
 ## 0.0.6 (2018-09-06)
 
