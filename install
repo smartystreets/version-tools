@@ -10,14 +10,13 @@ DOWNLOAD="https://github.com/smartystreets/version-tools/releases/download/${ver
 mkdir -p "${install_dir}"
 
 if command -v curl > /dev/null; then
-  curl -sL "${DOWNLOAD}" | tar -xz -C "${install_dir}"
+  curl -sL "${DOWNLOAD}" | tar -xzo -C "${install_dir}"
 elif command -v wget > /dev/null; then
-  wget -q -O - "${DOWNLOAD}" | tar -xz -C "${install_dir}"
+  wget -q -O - "${DOWNLOAD}" | tar -xzo -C "${install_dir}"
 else
   echo "wget or curl must be installed." && exit 1
 fi
 
-chown root:root "${install_dir}/bumpit" "${install_dir}/tagit"
 chmod 0755 "${install_dir}/bumpit" "${install_dir}/tagit"
 
 echo "Package [version-tools] successfully installed into [/usr/local/bin/]."
