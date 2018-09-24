@@ -1,5 +1,5 @@
 *DS_Store*
 *.swp
 __MACOSX
-/output
-/.idea
+/.idea/
+/workspace/

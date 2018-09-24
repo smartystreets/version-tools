@@ -32,19 +32,6 @@ $ bumpit -p 1.2.3 --dirty # version is clean, it doesn't increment
 1.2.3
 ```
 
-While these tools are designed to honor Semantic Versioning, they also allow alphabetic characters to be prefixed on the version:
-
-```
-$ bumpit -p v1.2.3
-v1.2.4
-
-$ bumpit -p ver1.2.3
-ver1.2.4
-
-$ bumpit -p charactersOr123Numbers1.2.3
-charactersOr123Numbers1.2.4
-```
-
 Here's an example of how to tag your Git repository based upon the existing semver-based tags:
 ```
 $ tagit
