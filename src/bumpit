@@ -13,8 +13,9 @@ while getopts ":Mmp" bump; do
   esac
 done
 
-clean=$(echo "${2}" | awk '{split($0,a,"-"); print a[1]}')
-dirty=$(echo "${2}" | awk '{split($0,a,"-"); print a[2]}')
+vgone=$(echo "${2}" | sed 's/^v//')
+clean=$(echo "${vgone}" | awk '{split($0,a,"-"); print a[1]}')
+dirty=$(echo "${vgone}" | awk '{split($0,a,"-"); print a[2]}')
 major=$(echo "${clean}" | awk '{split($0,a,"."); print a[1]}')
 minor=$(echo "${clean}" | awk '{split($0,a,"."); print a[2]}')
 patch=$(echo "${clean}" | awk '{split($0,a,"."); print a[3]}')
@@ -26,4 +27,8 @@ patch=$(echo "${clean}" | awk '{split($0,a,"."); print a[3]}')
 [ ! -z ${bump_minor} ] && minor=$((minor+1)) && patch=0
 [ ! -z ${bump_patch} ] && patch=$((patch+1))
 
-echo "${major}.${minor}.${patch}"
+if [[ ${2} == v* ]]; then
+	echo "v${major}.${minor}.${patch}"
+else 
+	echo "${major}.${minor}.${patch}"
+fi
