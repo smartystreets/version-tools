@@ -1,0 +1,83 @@
+#!/usr/bin/env sh
+
+assert() {
+  # See https://github.com/torokmark/assert.sh
+
+  local input=$1
+  local actual=`$1`
+  local expected="$2"
+
+  if [ "$expected" == "$actual" ]; then
+    printf "✔ $input --> [$actual]\n" "$@" >&2 || true
+    return 0
+  else
+    printf "✖ $input --> [$actual] should equal [$expected]\n" "$@" >&2 || true
+    return 1
+  fi
+}
+
+describe() {
+  printf "\n==== $1 ====\n\n"
+}
+
+# assert "command" "expected output"
+
+describe "Missing version entirely? Display the usage message."
+assert "./bumpit -p " "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # missing version entirely
+assert "./bumpit -m " "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # missing version entirely
+assert "./bumpit -M " "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # missing version entirely
+
+describe "Non-numeric element? Display the usage message."
+assert "./bumpit -p 1.2.a" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # non-numeric element
+assert "./bumpit -m 1.2.a" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # non-numeric element
+assert "./bumpit -M 1.2.a" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # non-numeric element
+
+describe "Totally invalid version? Display the usage message."
+assert "./bumpit -p not-a-version" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # totally invalid
+assert "./bumpit -m not-a-version" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # totally invalid
+assert "./bumpit -M not-a-version" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # totally invalid
+
+describe "Ambiguous options? Display the usage message."
+assert "./bumpit -p -m -M 0.0.0" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch"
+assert "./bumpit -m -M -p 0.0.0" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch"
+assert "./bumpit -M -p -m 0.0.0" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch"
+assert "./bumpit -p -m 0.0.0" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch"
+assert "./bumpit -M -m 0.0.0" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch"
+assert "./bumpit -M -p 0.0.0" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch"
+
+describe "Basic use case."
+assert "./bumpit -p 0.0.0" "0.0.1"
+assert "./bumpit -m 0.0.0" "0.1.0"
+assert "./bumpit -M 0.0.0" "1.0.0"
+assert "./bumpit -p 1.1.1" "1.1.2"
+assert "./bumpit -m 1.1.1" "1.2.0"
+assert "./bumpit -M 1.1.1" "2.0.0"
+
+describe "Basic use case with a 'v' prefix."
+assert "./bumpit -p v0.0.0" "v0.0.1"
+assert "./bumpit -m v0.0.0" "v0.1.0"
+assert "./bumpit -M v0.0.0" "v1.0.0"
+assert "./bumpit -p v1.1.1" "v1.1.2"
+assert "./bumpit -m v1.1.1" "v1.2.0"
+assert "./bumpit -M v1.1.1" "v2.0.0"
+
+describe "When passing -d, don't update 'clean' versions."
+assert "./bumpit -p -d 0.0.0" "0.0.0"
+assert "./bumpit -m -d 0.1.0" "0.1.0"
+assert "./bumpit -M -d 1.0.0" "1.0.0"
+
+describe "When passing -d, don't update 'clean' versions with a 'v' prefix."
+assert "./bumpit -p -d v0.0.0" "v0.0.0"
+assert "./bumpit -m -d v0.1.0" "v0.1.0"
+assert "./bumpit -M -d v1.0.0" "v1.0.0"
+
+describe "When passing -d, update 'dirty' versions."
+assert "./bumpit -p -d 0.0.0-17-6fb3af9" "0.0.1"
+assert "./bumpit -m -d 0.0.0-17-6fb3af9" "0.1.0"
+assert "./bumpit -M -d 0.0.0-17-6fb3af9" "1.0.0"
+
+describe "When passing -d, update 'dirty' versions with a 'v' prefix."
+assert "./bumpit -p -d v0.0.0-17-6fb3af9" "v0.0.1"
+assert "./bumpit -m -d v0.0.0-17-6fb3af9" "v0.1.0"
+assert "./bumpit -M -d v0.0.0-17-6fb3af9" "v1.0.0"
+

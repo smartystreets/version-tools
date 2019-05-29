@@ -1,34 +1,70 @@
 #!/usr/bin/env sh
 set -e
 
-if test "x${1}" = "x" || test "x${2}" = "x"; then
-   echo "usage: $(basename ${0}) [-Mmp] major.minor.patch [-d|--dirty]" && exit 1
-fi
-
-while getopts ":Mmp" bump; do
-  case $bump in
-    M) bump_major=true;;
-    m) bump_minor=true;;
-    p) bump_patch=true;;
+# Transform long options to short ones:
+for arg in "$@"; do
+  shift
+  case "$arg" in
+    "--dirty") set -- "$@" "-d" ;;
+    *)         set -- "$@" "$arg"
   esac
 done
 
-vgone=$(echo "${2}" | sed 's/^v//')
+option_count=0
+
+# Parse positional options:
+while getopts "Mmpd" bump; do
+  case ${bump} in
+    d) bump_dirty=true;;
+    p) bump_patch=true; option_count=$((option_count+1));;
+    m) bump_minor=true; option_count=$((option_count+1));;
+    M) bump_major=true; option_count=$((option_count+1));;
+  esac
+done
+
+# Only one incrementation option is allowed:
+if [ "$option_count" -ne "1" ]; then
+  echo "usage: $(basename ${0}) [-Mmp -d|--dirty] major.minor.patch" && exit 1
+fi
+
+# Remove all args except final, non-positional arg (the version number):
+shift "$((OPTIND-1))"
+
+# Parse the given version:
+first=${1}
+vgone=$(echo "${first}" | sed 's/^v//')
 clean=$(echo "${vgone}" | awk '{split($0,a,"-"); print a[1]}')
 dirty=$(echo "${vgone}" | awk '{split($0,a,"-"); print a[2]}')
 major=$(echo "${clean}" | awk '{split($0,a,"."); print a[1]}')
 minor=$(echo "${clean}" | awk '{split($0,a,"."); print a[2]}')
 patch=$(echo "${clean}" | awk '{split($0,a,"."); print a[3]}')
 
-# if the --dirty flag is specified, exit if we are in a clean state
-(test "x${3}" = "x--dirty" || test "x${3}" = "x-d" ) && test "x${dirty}" = "x" && echo "${clean}" && exit 0
+# Only numeric elements are allowed for major.minor.patch:
+numeric='^[0-9]+$'
+if ! [[ ${major} =~ $numeric ]]; then
+  echo "usage: $(basename ${0}) [-Mmp -d|--dirty] major.minor.patch" && exit 1
+elif ! [[ ${minor} =~ $numeric ]]; then
+  echo "usage: $(basename ${0}) [-Mmp -d|--dirty] major.minor.patch" && exit 1
+elif ! [[ ${patch} =~ $numeric ]]; then
+  echo "usage: $(basename ${0}) [-Mmp -d|--dirty] major.minor.patch" && exit 1
+fi
 
+# Add 'v' prefix back if it was supplied originally:
+if [[ ${first:0:1} == "v" ]]; then
+  clean=$(echo "v${clean}")
+fi
+
+# if the --dirty flag is specified, exit if we are in a clean state:
+[ ! -z ${bump_dirty} ] && test "x${dirty}" = "x" && echo "${clean}" && exit 0
+
+# Increment the version number:
 [ ! -z ${bump_major} ] && major=$((major+1)) && minor=0 && patch=0
 [ ! -z ${bump_minor} ] && minor=$((minor+1)) && patch=0
 [ ! -z ${bump_patch} ] && patch=$((patch+1))
 
-if [[ ${2} == v* ]]; then
-	echo "v${major}.${minor}.${patch}"
-else 
-	echo "${major}.${minor}.${patch}"
+# Render final version with 'v' if originally supplied:
+final=$(echo "${major}.${minor}.${patch}")
+if [[ ${first:0:1} == "v" ]]; then
+  final=$(echo "v${final}")
 fi
+echo "${final}"
