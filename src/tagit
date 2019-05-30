@@ -1,14 +1,32 @@
 #!/usr/bin/env sh
 set -e
 
-case "${1}" in
-  -M|-m|-p) ;;
-  *) echo "usage: $(basename ${0}) -[M|m|p] [-d|--dryrun|--dry-run]" && exit 1
-esac
+usage_text="usage: $(basename ${0}) -[M|m|p] [-d|--dryrun|--dry-run]"
 
-case "${2}" in
- -d|--dryrun|--dry-run) dryrun=true;;
-esac
+# Transform long options to short ones:
+for arg in "$@"; do
+  shift
+  case "$arg" in
+    "--dryrun"|"--dry-run") set -- "$@" "-d" ;;
+    *)                      set -- "$@" "$arg"
+  esac
+done
+
+# Parse positional options:
+option_count=0
+while getopts "Mmpd" arg; do
+  case ${arg} in
+    d) dryrun=true;;
+    p) bump=${arg}; option_count=$((option_count+1));;
+    m) bump=${arg}; option_count=$((option_count+1));;
+    M) bump=${arg}; option_count=$((option_count+1));;
+  esac
+done
+
+# Only one incrementation option is allowed:
+if [ "$option_count" -ne "1" ]; then
+  echo "${usage_text}" && exit 1
+fi
 
 message="Git command not found. Git executable is required to tag git repositories."
 command -v git >/dev/null 2>/dev/null || (echo "${message}" && exit 2)
@@ -17,9 +35,9 @@ message="Git repository not found. This command must be run within a git reposit
 git rev-parse --git-dir >/dev/null 2>/dev/null || (echo "${message}" && exit 3)
 
 version="$(git describe --tags 2>/dev/null || echo "0.0.0")"
-bump="$(dirname "${0}")/bumpit"
-clean="$("${bump}" -${1} "${version}")"
-dirty="$("${bump}" -${1} --dirty "${version}")"
+bumpit="$(dirname "${0}")/bumpit"
+clean="$("${bumpit}" -${bump} "${version}")"
+dirty="$("${bumpit}" -${bump} --dirty "${version}")"
 
 message="${dirty}"
 test "x${dryrun}" = "xtrue" && echo "${dirty}" && exit 0
