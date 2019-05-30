@@ -1,29 +1,73 @@
 #!/usr/bin/env sh
+
 set -e
 
-if test "x${1}" = "x" || test "x${2}" = "x"; then
-   echo "usage: $(basename ${0}) [-Mmp] major.minor.patch [-d|--dirty]" && exit 1
-fi
-
-while getopts ":Mmp" bump; do
-  case $bump in
-    M) bump_major=true;;
-    m) bump_minor=true;;
-    p) bump_patch=true;;
+# Transform long options to short ones:
+for arg in "$@"; do
+  shift
+  case "$arg" in
+    "--dirty") set -- "$@" "-d" ;;
+    *)         set -- "$@" "$arg"
   esac
 done
 
-clean=$(echo "${2}" | awk '{split($0,a,"-"); print a[1]}')
-dirty=$(echo "${2}" | awk '{split($0,a,"-"); print a[2]}')
-major=$(echo "${clean}" | awk '{split($0,a,"."); print a[1]}')
-minor=$(echo "${clean}" | awk '{split($0,a,"."); print a[2]}')
-patch=$(echo "${clean}" | awk '{split($0,a,"."); print a[3]}')
+# Parse positional options:
+option_count=0
+while getopts "Mmpd" bump; do
+  case ${bump} in
+    d) bump_dirty=true;;
+    p) bump_patch=true; option_count=$((option_count+1));;
+    m) bump_minor=true; option_count=$((option_count+1));;
+    M) bump_major=true; option_count=$((option_count+1));;
+  esac
+done
 
-# if the --dirty flag is specified, exit if we are in a clean state
-(test "x${3}" = "x--dirty" || test "x${3}" = "x-d" ) && test "x${dirty}" = "x" && echo "${clean}" && exit 0
+usage_text="usage: $(basename ${0}) [-Mmp -d|--dirty] major.minor.patch"
 
+# Only one incrementation option is allowed:
+if [ "$option_count" -ne "1" ]; then
+  echo "${usage_text}" && exit 1
+fi
+
+# Remove all args except final, non-positional arg (the version number):
+shift "$((OPTIND-1))"
+
+# Parse the given version:
+first=${1}
+vgone=$(echo "${first}" | sed 's/^v//')
+clean=$(echo "${vgone}" | awk '{split($0,a,"-"); print a[1]}') # 1.2.3-17-6fb3af9 -> 1.2.3
+dirty=$(echo "${vgone}" | awk '{split($0,a,"-"); print a[2]}') # 1.2.3-17-6fb3af9 -> -17-6fb3af9
+major=$(echo "${clean}" | awk '{split($0,a,"."); print a[1]}') # 1.2.3-17-6fb3af9 -> 1
+minor=$(echo "${clean}" | awk '{split($0,a,"."); print a[2]}') # 1.2.3-17-6fb3af9 -> 2
+patch=$(echo "${clean}" | awk '{split($0,a,"."); print a[3]}') # 1.2.3-17-6fb3af9 -> 3
+
+# Each element must be populated:
+[ -z ${major} ] && echo "${usage_text}" && exit 1
+[ -z ${minor} ] && echo "${usage_text}" && exit 1
+[ -z ${patch} ] && echo "${usage_text}" && exit 1
+
+# Each element must contain digits only:
+[ `echo "${clean}" | sed 's/[0-9]//g'` != ".." ] && echo "${usage_text}" && exit 1
+
+# Add 'v' prefix back if it was supplied originally:
+case "$first" in
+  v*) clean=$(echo "v${clean}");;
+  *);;
+esac
+
+# Leave version unchanged if --dirty and version is 'clean':
+[ ! -z ${bump_dirty} ] && test "x${dirty}" = "x" && echo "${clean}" && exit 0
+
+# Increment the version number:
 [ ! -z ${bump_major} ] && major=$((major+1)) && minor=0 && patch=0
 [ ! -z ${bump_minor} ] && minor=$((minor+1)) && patch=0
 [ ! -z ${bump_patch} ] && patch=$((patch+1))
 
-echo "${major}.${minor}.${patch}"
+# Render final version with 'v' if originally supplied:
+final=$(echo "${major}.${minor}.${patch}")
+case "$first" in
+  v*) final=$(echo "v${final}");;
+  *);;
+esac
+
+echo "${final}"

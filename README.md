@@ -4,6 +4,15 @@ These tools are designed to facilate version calculation and respository tagging
 
 There are two scripts: one for semver calculation and another which tags your Git repository according to the calculated version script. Git is only required if and when you want to tag your repository using the tagging script.
 
+Pre-existing tags must be of one of the following forms to be recognized by this tool:
+
+- (major).(minor).(patch)
+	- Example: `1.2.3`
+- v(major).(minor).(patch)
+	- Example: `v1.2.3`
+
+Tags created by this tool will match the form of the most recent pre-existing tag.
+
 Here's example of how to calculate the next semver value based upon the existing version:
 
 ```
@@ -13,23 +22,23 @@ usage: usage: bumpit [-Mmp] major.minor.patch [-d|--dirty]
 $ bumpit -p 0.0.0
 0.0.1
 
-$ bumpit -m 0.0.3
-0.1.0
+$ bumpit -m v0.0.3
+v0.1.0
 
 $ bumpit -M 1.1.15
 2.0.0
 
-$ bumpit -Mmp 2.3.4
-3.1.1
+$ bumpit -Mmp v2.3.4
+v3.1.1
 
 $ bumpit -p 1.2.3-17-6fb3af9 # (results of git-describe)
 1.2.4
 
-$ bumpit -p 1.2.3-17-6fb3af9 --dirty
-1.2.4
+$ bumpit -p v1.2.3-17-6fb3af9 --dirty
+v1.2.4
 
-$ bumpit -p 1.2.3 --dirty # version is clean, it doesn't increment
-1.2.3
+$ bumpit -p v1.2.3 --dirty # version is clean, it doesn't increment
+v1.2.3
 ```
 
 Here's an example of how to tag your Git repository based upon the existing semver-based tags:
