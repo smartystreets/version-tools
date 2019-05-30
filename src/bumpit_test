@@ -3,16 +3,16 @@
 assert() {
   # See https://github.com/torokmark/assert.sh
 
-  local input=$1
-  local actual=`$1`
+  local input="$1"
+  local actual="$($1)"
   local expected="$2"
 
-  if [ "$expected" == "$actual" ]; then
-    printf "✔ $input --> [$actual]\n" "$@" >&2 || true
-    return 0
-  else
+  if [ "$expected" != "$actual" ]; then
     printf "✖ $input --> [$actual] should equal [$expected]\n" "$@" >&2 || true
     return 1
+  else
+    printf "✔ $input --> [$actual]\n" "$@" >&2 || true
+    return 0
   fi
 }
 
@@ -23,9 +23,9 @@ describe() {
 # assert "command" "expected output"
 
 describe "Missing version entirely? Display the usage message."
-assert "./bumpit -p " "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # missing version entirely
-assert "./bumpit -m " "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # missing version entirely
-assert "./bumpit -M " "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # missing version entirely
+assert "./bumpit -p" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" 1 # missing version entirely
+assert "./bumpit -m" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" 1 # missing version entirely
+assert "./bumpit -M" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" 1 # missing version entirely
 
 describe "Non-numeric element? Display the usage message."
 assert "./bumpit -p 1.2.a" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # non-numeric element
