@@ -21,29 +21,30 @@ describe() {
 }
 
 # assert "command" "expected output"
+usage_text="usage: bumpit [-Mmp -d|--dirty] major.minor.patch"
 
 describe "Missing version entirely? Display the usage message."
-assert "./bumpit -p" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" 1 # missing version entirely
-assert "./bumpit -m" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" 1 # missing version entirely
-assert "./bumpit -M" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" 1 # missing version entirely
+assert "./bumpit -p" "${usage_text}" 1 # missing version entirely
+assert "./bumpit -m" "${usage_text}" 1 # missing version entirely
+assert "./bumpit -M" "${usage_text}" 1 # missing version entirely
 
 describe "Non-numeric element? Display the usage message."
-assert "./bumpit -p 1.2.a" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # non-numeric element
-assert "./bumpit -m 1.2.a" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # non-numeric element
-assert "./bumpit -M 1.2.a" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # non-numeric element
+assert "./bumpit -p 1.2.a" "${usage_text}" # non-numeric element
+assert "./bumpit -m 1.2.a" "${usage_text}" # non-numeric element
+assert "./bumpit -M 1.2.a" "${usage_text}" # non-numeric element
 
 describe "Totally invalid version? Display the usage message."
-assert "./bumpit -p not-a-version" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # totally invalid
-assert "./bumpit -m not-a-version" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # totally invalid
-assert "./bumpit -M not-a-version" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch" # totally invalid
+assert "./bumpit -p not-a-version" "${usage_text}" # totally invalid
+assert "./bumpit -m not-a-version" "${usage_text}" # totally invalid
+assert "./bumpit -M not-a-version" "${usage_text}" # totally invalid
 
 describe "Ambiguous options? Display the usage message."
-assert "./bumpit -p -m -M 0.0.0" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch"
-assert "./bumpit -m -M -p 0.0.0" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch"
-assert "./bumpit -M -p -m 0.0.0" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch"
-assert "./bumpit -p -m 0.0.0" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch"
-assert "./bumpit -M -m 0.0.0" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch"
-assert "./bumpit -M -p 0.0.0" "usage: bumpit [-Mmp -d|--dirty] major.minor.patch"
+assert "./bumpit -p -m -M 0.0.0" "${usage_text}"
+assert "./bumpit -m -M -p 0.0.0" "${usage_text}"
+assert "./bumpit -M -p -m 0.0.0" "${usage_text}"
+assert "./bumpit -p -m 0.0.0" "${usage_text}"
+assert "./bumpit -M -m 0.0.0" "${usage_text}"
+assert "./bumpit -M -p 0.0.0" "${usage_text}"
 
 describe "Basic use case."
 assert "./bumpit -p 0.0.0" "0.0.1"

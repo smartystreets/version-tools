@@ -22,9 +22,11 @@ while getopts "Mmpd" bump; do
   esac
 done
 
+usage_text="usage: $(basename ${0}) [-Mmp -d|--dirty] major.minor.patch"
+
 # Only one incrementation option is allowed:
 if [ "$option_count" -ne "1" ]; then
-  echo "usage: $(basename ${0}) [-Mmp -d|--dirty] major.minor.patch" && exit 1
+  echo "${usage_text}" && exit 1
 fi
 
 # Remove all args except final, non-positional arg (the version number):
@@ -40,12 +42,12 @@ minor=$(echo "${clean}" | awk '{split($0,a,"."); print a[2]}') # 1.2.3-17-6fb3af
 patch=$(echo "${clean}" | awk '{split($0,a,"."); print a[3]}') # 1.2.3-17-6fb3af9 -> 3
 
 # Each element must be populated:
-[ -z ${major} ] && echo "usage: $(basename ${0}) [-Mmp -d|--dirty] major.minor.patch" && exit 1
-[ -z ${minor} ] && echo "usage: $(basename ${0}) [-Mmp -d|--dirty] major.minor.patch" && exit 1
-[ -z ${patch} ] && echo "usage: $(basename ${0}) [-Mmp -d|--dirty] major.minor.patch" && exit 1
+[ -z ${major} ] && echo "${usage_text}" && exit 1
+[ -z ${minor} ] && echo "${usage_text}" && exit 1
+[ -z ${patch} ] && echo "${usage_text}" && exit 1
 
 # Each element must contain digits only:
-[ `echo "${clean}" | sed 's/[0-9]//g'` != ".." ] && echo "usage: $(basename ${0}) [-Mmp -d|--dirty] major.minor.patch" && exit 1
+[ `echo "${clean}" | sed 's/[0-9]//g'` != ".." ] && echo "${usage_text}" && exit 1
 
 # Add 'v' prefix back if it was supplied originally:
 case "$first" in
