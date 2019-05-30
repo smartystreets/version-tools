@@ -1,5 +1,12 @@
 ## Next (Unreleased)
 
+## 1.0.0 (2019-05-30)
+
+* Added support for pre-existing version numbers having a 'v' prefix (`v1.2.3`). The main motivation for this change is so that this tool will play nicely with git repositories containing [go modules](https://github.com/golang/go/wiki/Modules#modules).
+* Solidified command-line argument parsing such that only one increment option is allowed (`-p` or `-m` or `-M`).
+	* The non-positional version argument to the bumpit script must come after all positional arguments.
+* The bumpit script is now under much more stringent unit test coverage (see the `bumpit_test` script).
+
 ## 0.0.8 (2018-09-24)
 
 * Versioned install script
