@@ -17,4 +17,4 @@ fi
 
 chmod 0755 "${install_dir}/bumpit" "${install_dir}/tagit"
 
-echo "Package [version-tools@${VERSION}] successfully installed into [${TARGET}]."
+echo "Package [version-tools@${version}] successfully installed into [${install_dir}]."
