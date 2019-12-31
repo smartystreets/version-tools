@@ -1,5 +1,9 @@
 ## Next (Unreleased)
 
+## 1.0.1 (2019-12-31)
+
+* Small packaging change surrounding the bash installation script.
+
 ## 1.0.0 (2019-05-30)
 
 * Added support for pre-existing version numbers having a 'v' prefix (`v1.2.3`). The main motivation for this change is so that this tool will play nicely with git repositories containing [go modules](https://github.com/golang/go/wiki/Modules#modules).
