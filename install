@@ -1,8 +1,6 @@
 #!/usr/bin/env sh
 set -eu
 
-[ $(id -u) -ne 0 ] && echo "This script must be run as root" && exit 1
-
 install_dir="${TARGET:-/usr/local/bin}"
 version="${VERSION:-1.0.1}"
 DOWNLOAD="https://github.com/smartystreets/version-tools/releases/download/${version}/release.tar.gz"
